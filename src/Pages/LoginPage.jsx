@@ -1,18 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import Circle from "../Images/circle.svg";
 import Circle1 from "../Images/circle-1.svg";
 import Man from "../Images/man.svg";
-import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Input, notification } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { auth } from "../firebase";
 import "./Common.css";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { update } from "../Redux/userSlice";
 
 export default function LoginPage() {
-    const onFinish = (values) => {
-        console.log('Success:', values);
-      };
-      const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onFinish = (values) => {
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        // Signed in
+        // console.log(userCredential.user);
+        const user = userCredential.user;
+        dispatch(update(user));
+        navigate("/home");
+      })
+      .catch((error) => {
+        openNotification("bottomRight");
+      });
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement) => {
+    api.error({
+      message: `Invalid Credentials`,
+      placement,
+    });
+  };
+
   return (
     <div className="App">
       <div className="container-large">
@@ -45,7 +74,7 @@ export default function LoginPage() {
                 >
                   <Form.Item
                     label="Username"
-                    name="username"
+                    name="email"
                     rules={[
                       {
                         required: true,
@@ -53,7 +82,14 @@ export default function LoginPage() {
                       },
                     ]}
                   >
-                    <Input size="large" prefix={<UserOutlined style={{color:'rgba(0, 0, 0, 0.25)'}} />} />
+                    <Input
+                      size="large"
+                      prefix={
+                        <UserOutlined
+                          style={{ color: "rgba(0, 0, 0, 0.25)" }}
+                        />
+                      }
+                    />
                   </Form.Item>
 
                   <Form.Item
@@ -66,20 +102,36 @@ export default function LoginPage() {
                       },
                     ]}
                   >
-                    <Input.Password size="large" prefix={<LockOutlined style={{color:'rgba(0, 0, 0, 0.25)'}} />} />
+                    <Input.Password
+                      size="large"
+                      prefix={
+                        <LockOutlined
+                          style={{ color: "rgba(0, 0, 0, 0.25)" }}
+                        />
+                      }
+                    />
                   </Form.Item>
 
                   <Form.Item
                     wrapperCol={{
-                    //   offset: 8,  its a type of margin
+                      //   offset: 8,  its a type of margin
                       span: 24,
                     }}
                   >
-                    <Button size="large" type="primary" block style={{backgroundColor:'#1C1A5E'}}>
+                    {/* <Button
+                      size="large"
+                      type="primary"
+                      block
+                      style={{ backgroundColor: "#1C1A5E" }}
+                      onClick={e=>console.log("jhf")}
+                    >
                       Login
-                    </Button>
+                    </Button> */}
+
+                    <input type="submit" className="login-btn" value="Log in" />
                   </Form.Item>
                 </Form>
+                {contextHolder}
               </div>
             </div>
           </div>
