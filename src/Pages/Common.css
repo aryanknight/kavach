@@ -1,0 +1,72 @@
+.login-cont {
+    width: 100%;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: #fcfbf3;
+}
+
+.login {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.login-left{
+    width: 50%;
+    background-color: #EBEBF2;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.login-right{
+    width: 50%;
+    height: 100%;
+    position: relative;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#login-man{
+    width: 70%;
+}
+
+#login-circle{
+    position: absolute;
+    top: 70%;
+    left: -10%;
+}
+
+#login-circle-1{
+    position: absolute;
+    top: 70%;
+    left: 60%;
+}
+
+#login-circle-2{
+    position: absolute;
+    top: -15%;
+    left: 70%;
+}
+
+#login-circle-3{
+    position: absolute;
+    top: 10%;
+    left: 40%;
+}
+
+.login-form-cont{
+    width: 50%;
+}
